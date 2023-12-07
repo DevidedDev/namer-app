@@ -1,6 +1,8 @@
 # namer_app
 
-A new Flutter project.
+First flutter project. 
+Following google's code lab. Learning by doing
+
 
 ## Getting Started
 
