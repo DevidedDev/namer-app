@@ -2,7 +2,7 @@
     <application
         android:label="namer_app"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/wordgenerator_icon">
         <activity
             android:name=".MainActivity"
             android:exported="true"
