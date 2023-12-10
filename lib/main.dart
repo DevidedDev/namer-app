@@ -71,10 +71,12 @@ class MyAppState extends ChangeNotifier {
     }
   }
 
+  /* 
   void buildPopup(FavouriteTile tile) {
     print("long press ${tile.wordPair.asCamelCase}");
     removeFavorite(tile.wordPair);
   }
+  */
 }
 
 // ...
@@ -157,33 +159,41 @@ class GeneratorPage extends StatelessWidget {
       icon = Icons.favorite_border;
     }
 
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          BigCard(pair: pair),
-          SizedBox(height: 10),
-          Row(
-            mainAxisSize: MainAxisSize.min,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(appState.current.asCamelCase),
+        Text(appState.current.asCamelCase),
+        Text(appState.current.asCamelCase),
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton.icon(
-                onPressed: () {
-                  appState.toggleFavorite();
-                },
-                icon: Icon(icon),
-                label: Text('Like'),
-              ),
-              SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: () {
-                  appState.getNext();
-                },
-                child: Text('Next'),
+              BigCard(pair: pair),
+              SizedBox(height: 10),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      appState.toggleFavorite();
+                    },
+                    icon: Icon(icon),
+                    label: Text('Like'),
+                  ),
+                  SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      appState.getNext();
+                    },
+                    child: Text('Next'),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -198,25 +208,20 @@ class FavoritesPage extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       child: ListView(
         children: [
-          Card(
-            color: Theme.of(context).colorScheme.primary,
-            elevation: 5,
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Text("Favorites: ",
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      )),
-            ),
+          Text("You have ${favorites.length} favorites: "),
+          SizedBox(
+            height: 20,
           ),
-          SizedBox(height: 12),
-          for (var wordPair in favorites)
-            FavouriteTile(
-              wordPair: wordPair,
-              appState: appState,
-            ),
+          Wrap(
+            children: [
+              SizedBox(height: 12),
+              for (var wordPair in favorites)
+                FavouriteTile(
+                  wordPair: wordPair,
+                  appState: appState,
+                ),
+            ],
+          ),
         ],
       ),
     );
@@ -234,45 +239,31 @@ class FavouriteTile extends StatelessWidget {
   Widget build(BuildContext context) {
     //var appState = context.watch<MyAppState>();
     final theme = Theme.of(context);
-    final color = theme.colorScheme.primary;
-    return Container(
-      margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-      child: Material(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-          side: BorderSide(color: Colors.transparent),
-        ),
-        color: Colors.transparent,
-        child: ListTile(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-            side: BorderSide(color: Colors.transparent),
+    const color = Colors.black;
+    return SizedBox(
+      width: 200,
+      child: Row(
+        children: [
+          ElevatedButton(
+            onPressed: () => appState.removeFavorite(wordPair),
+            style: ElevatedButton.styleFrom(
+              shape: CircleBorder(),
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+            ),
+            child: Icon(
+              Icons.delete_outline,
+              color: theme.colorScheme.primary,
+            ),
           ),
-          //style: Theme.of(context).istTileTheme.style,
-          contentPadding: const EdgeInsets.all(12),
-          tileColor: theme.colorScheme.background,
-          leading: Icon(
-            Icons.favorite,
-            color: color,
-          ),
-          title: Text(
+          Text(
             wordPair.asPascalCase,
             style: TextStyle(
               fontSize: 18,
               color: color,
             ),
           ),
-
-          onLongPress: () {
-            print("Long press");
-            showDialog(
-              context: context,
-              builder: (BuildContext context) =>
-                  RemoveAlert(wordPair: wordPair),
-            );
-          },
-        ),
+        ],
       ),
     );
   }
@@ -339,17 +330,33 @@ class BigCard extends StatelessWidget {
     //give me a copy of the current style and a add this color on top
     final style = theme.textTheme.displayMedium!.copyWith(
       color: theme.colorScheme.onPrimary, //gives well fitting clr to theme clr
-      fontFamily: "JosefinSans",
     );
     return Card(
       color: theme.colorScheme.primary,
       elevation: 12,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Text(
-          pair.asPascalCase,
-          style: style,
-          semanticsLabel: "${pair.first}${pair.second}",
+      child: AnimatedSize(
+        duration: Duration(milliseconds: 200),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: MergeSemantics(
+            child: Wrap(
+              alignment: WrapAlignment.center,
+              children: [
+                Text(
+                  pair.first.toLowerCase(),
+                  style: style.copyWith(
+                    fontWeight: FontWeight.w200,
+                  ),
+                ),
+                Text(
+                  pair.second,
+                  style: style.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -370,4 +377,3 @@ class MyTestClass<MyType> {
   }
 }
 */
-
