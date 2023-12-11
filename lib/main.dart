@@ -162,9 +162,6 @@ class GeneratorPage extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(appState.current.asCamelCase),
-        Text(appState.current.asCamelCase),
-        Text(appState.current.asCamelCase),
         Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
